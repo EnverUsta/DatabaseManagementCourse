@@ -1,0 +1,141 @@
+CREATE TABLE kasiyer(
+	tckimlik varchar(11) not null,
+	isim varchar(30) not null,
+	tel varchar(15) not null,
+	eposta varchar(30) not null,
+	primary key(tckimlik)
+);
+
+
+CREATE TABLE tedarikci(
+	vergino varchar(15) not null,
+	isim varchar(30) not null,
+	telefon varchar(15) not null,
+	eposta varchar(30) not null,
+	faturasayisi integer not null,
+	faturaToplami integer not null,
+	faturaOrtalamasi integer not null,
+	primary key(vergino)
+);
+
+CREATE TABLE urun(
+	barkod varchar(15) not null,
+	ad varchar(15) not null,
+	stokMiktari integer not null, 
+	urunToplamKar integer not null,
+	satisfiyattrendi varchar(30) not null,
+	primary key(barkod)
+);
+
+CREATE TABLE fatura(
+	faturano varchar(15) not null,
+	tarih date not null,
+	toplam integer not null,
+	vergiNo varchar(15),
+	foreign key(vergino) references tedarikci(vergino),
+	primary key(faturano)
+);
+
+CREATE TABLE faturaurunleri(
+	faturano varchar(15) not null,
+	barkod varchar(15) not null,
+	foreign key (faturaNo) references fatura(faturaNo),
+	foreign key (barkod) references urun(barkod),
+	miktar integer,
+	birim varchar(10),
+	birimfiyat integer,
+	primary key (faturaNo, barkod)
+);
+
+CREATE TABLE fis(
+	fisno varchar(15) not null,
+	tarihsaat timestamp not null,
+	toplam integer not null,
+	tckimlik varchar(11),
+	foreign key (tckimlik) references kasiyer(tckimlik),
+	primary key (fisNo)
+);
+
+CREATE TABLE fisurunleri(
+	fisno varchar(15) not null,
+	barkod varchar(15) not null,
+	miktar integer not null,
+	birim varchar(10) not null,
+	birimfiyat integer not null,
+	foreign key (fisNo) references fis(fisNo),
+	foreign key (barkod) references urun(barkod),
+	primary key(fisno, barkod)
+);
+
+
+
+
+
+
+
+
+
+--Melisa Fidan
+create table kasiyer
+                (tckimlik integer not null,
+                  isim varchar(11) not null,
+                  tel integer not null,
+                  eposta varchar(30) not null,
+                  primary key (tckimlik));
+
+create table tedarikci
+                (vergiNo integer not null,
+                  isim varchar(30) not null,
+                  tel integer not null,
+                  eposta varchar(30) not null,
+                  faturaSayisi integer not null,
+                  faturaToplami integer not null,
+                  faturaOrtalamasi integer not null,
+                  primary key (vergiNo));
+
+create table urun
+               ( barkod integer not null,
+                  adi varchar(30) not null,
+                  stokMiktari integer not null,
+                  urunToplamKar integer not null,
+                  satisFiyatTrendi varchar(30) not null,
+                  primary key ( barkod ));
+
+
+create table fatura
+               ( faturaNo integer not null,
+                  tarih date not null,
+                  toplam integer not null,
+                  vergiNo integer,
+                  foreign key (vergiNo) references tedarikci(vergiNo) ,
+                  primary key ( faturaNo ));
+
+
+
+create table faturaUrunleri
+               ( faturaNo integer,
+                  barkod integer,
+                 foreign key (faturaNo) references fatura(faturaNo ),
+	 foreign key (barkod) references urun(barkod),
+	 miktar integer not null,
+                 birim varchar(10) not null, 
+                 birimFiyat integer not null,
+                 primary key ( faturaNo ,barkod));
+
+create table fis
+               ( fisNo integer not null,
+                  tarihsaat timestamp not null,
+                  toplam integer not null,
+                  tckimlik integer,
+                  foreign key (tckimlik) references kasiyer(tckimlik) ,
+                  primary key ( fisNo ));
+
+create table fisUrunleri
+               ( fisNo integer,
+                  barkod integer,
+                 foreign key (fisNo) references fis(fisNo ),
+	 foreign key (barkod) references urun(barkod),
+	 miktar integer not null,
+                 birim varchar(10) not null, 
+                 birimFiyat integer not null,
+                 primary key ( fisNo ,barkod) );

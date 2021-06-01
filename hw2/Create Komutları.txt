@@ -1,0 +1,51 @@
+create table hastane
+	(hid integer not null,
+	 adi varchar(30) not null,
+	 sehir varchar(30) not null,
+	 primary key (hid));
+
+
+create table doctor
+	(did integer not null,
+	 adi varchar(30) not null,
+	 uzmanlikAlani varchar(30) not null,
+	 hid integer not null,
+	 foreign key (hid) references hastane(hid),
+	 primary key (did));
+
+
+create table hasta
+	(pid integer not null,
+	 adi varchar(30) not null,
+	 sonTestSonucu varchar(30) not null,
+	 primary key (pid));
+
+
+create table hastaKabul
+	(pid integer not null,
+	 hid integer not null,
+	 foreign key (pid) references hasta(pid),
+	 foreign key (hid) references hastane(hid),
+	 kabulTarih date not null,
+	 entubeTarih date,
+	 olumTarih date,
+	 did integer not null,
+	 foreign key (did) references doctor(did));
+
+
+create table testTuru
+	(tid integer not null,
+	 adi varchar(30) not null,
+	 fiyat numeric not null,
+	 guvenilirlik integer not null,
+	 orijin varchar(4) not null,
+	 primary key (tid));
+
+
+create table test
+	(pid integer not null,
+	 tid integer not null,
+	 foreign key (pid) references hasta(pid),
+	 foreign key (tid) references testTuru(tid),
+	 tarih date not null,
+	 sonuc varchar(3));
